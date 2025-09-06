@@ -14,3 +14,17 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+const snowToggle = document.getElementById('snow-toggle');
+if (snowToggle) {
+  const root = document.documentElement;
+  const apply = () => {
+    if (snowToggle.checked) {
+      root.classList.remove('snow-off');
+    } else {
+      root.classList.add('snow-off');
+    }
+  };
+  snowToggle.addEventListener('change', apply);
+  apply(); // initialize on load based on current checkbox state
+}

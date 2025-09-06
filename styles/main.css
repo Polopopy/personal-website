@@ -39,44 +39,45 @@ a:hover { color: var(--accent-light); }
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;              /* behind content */
+  z-index: 0;                       /* behind content */
   will-change: background-position;
 }
 
 /* Layer 1 (far) */
 #snow {
   opacity: .45;
-  background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2730%27%20height%3D%2730%27%3E%3Ccircle%20cx%3D%274%27%20cy%3D%276%27%20r%3D%271.1%27%20fill%3D%27white%27/%3E%3Ccircle%20cx%3D%2718%27%20cy%3D%2712%27%20r%3D%270.9%27%20fill%3D%27white%27/%3E%3Ccircle%20cx%3D%2710%27%20cy%3D%2724%27%20r%3D%270.8%27%20fill%3D%27white%27/%3E%3C/svg%3E");
+  background-image: url("../assets/snow/layer1.svg");
   background-repeat: repeat;
   background-size: 30px 30px;
-  animation: snow-fall var(--snow-speed-1) linear infinite;
+  animation: snow-fall var(--snow-speed-1, 30s) linear infinite;
 }
 
 /* Layer 2 (mid) */
 #snow::before {
   opacity: .6;
-  background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2740%27%20height%3D%2740%27%3E%3Ccircle%20cx%3D%278%27%20cy%3D%2710%27%20r%3D%271.3%27%20fill%3D%27white%27/%3E%3Ccircle%20cx%3D%2726%27%20cy%3D%2722%27%20r%3D%271.2%27%20fill%3D%27white%27/%3E%3Ccircle%20cx%3D%2716%27%20cy%3D%2736%27%20r%3D%271.0%27%20fill%3D%27white%27/%3E%3C/svg%3E");
+  background-image: url("../assets/snow/layer2.svg");
   background-repeat: repeat;
   background-size: 40px 40px;
-  animation: snow-fall var(--snow-speed-2) linear infinite;
+  animation: snow-fall var(--snow-speed-2, 20s) linear infinite;
 }
 
 /* Layer 3 (near) */
 #snow::after {
   opacity: .75;
   filter: drop-shadow(0 0 2px rgba(255,255,255,.7));
-  background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2750%27%20height%3D%2750%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%278%27%20r%3D%271.8%27%20fill%3D%27white%27/%3E%3Ccircle%20cx%3D%2734%27%20cy%3D%2730%27%20r%3D%271.6%27%20fill%3D%27white%27/%3E%3Ccircle%20cx%3D%2720%27%20cy%3D%2744%27%20r%3D%271.5%27%20fill%3D%27white%27/%3E%3C/svg%3E");
+  background-image: url("../assets/snow/layer3.svg");
   background-repeat: repeat;
   background-size: 50px 50px;
-  animation: snow-fall var(--snow-speed-3) linear infinite;
+  animation: snow-fall var(--snow-speed-3, 12s) linear infinite;
 }
 
+/* Vertical fall + subtle wind drift */
 @keyframes snow-fall {
-  0%   { background-position: 0 0; }
+  0%   { background-position: 0    0; }
   100% { background-position: -40vw 100vh; }
 }
 
-/* Pause when toggle is off (class added to <html> by JS) */
+/* Toggle support (pause when .snow-off is on <html>) */
 .snow-off #snow,
 .snow-off #snow::before,
 .snow-off #snow::after { animation: none !important; }
