@@ -10,10 +10,25 @@
   --shadow: 0 4px 20px rgba(0,0,0,.3);
   --container: 900px;
 
-  /* Snow speeds */
-  --snow-speed-1: 30s;
-  --snow-speed-2: 20s;
-  --snow-speed-3: 12s;
+  --flake-tile:
+    radial-gradient(2px 2px at 120px 80px, rgba(255,255,255,0.9) 50%, transparent),
+    radial-gradient(3px 3px at 240px 160px, rgba(255,255,255,0.7) 50%, transparent),
+    radial-gradient(1px 1px at 360px 40px, rgba(255,255,255,0.8) 50%, transparent),
+    radial-gradient(2px 2px at 80px 200px, white 50%, transparent),
+    radial-gradient(3px 3px at 200px 120px, rgba(255,255,255,0.6) 50%, transparent),
+    radial-gradient(1px 1px at 320px 180px, rgba(255,255,255,0.9) 50%, transparent),
+    radial-gradient(2px 2px at 40px 280px, rgba(255,255,255,0.7) 50%, transparent),
+    radial-gradient(3px 3px at 160px 240px, white 50%, transparent),
+    radial-gradient(1px 1px at 280px 60px, rgba(255,255,255,0.8) 50%, transparent),
+    radial-gradient(2px 2px at 400px 140px, rgba(255,255,255,0.6) 50%, transparent),
+    radial-gradient(3px 3px at 60px 160px, rgba(255,255,255,0.9) 50%, transparent),
+    radial-gradient(1px 1px at 180px 300px, rgba(255,255,255,0.7) 50%, transparent),
+    radial-gradient(2px 2px at 300px 220px, white 50%, transparent),
+    radial-gradient(3px 3px at 420px 100px, rgba(255,255,255,0.8) 50%, transparent),
+    radial-gradient(1px 1px at 100px 260px, rgba(255,255,255,0.6) 50%, transparent),
+    radial-gradient(2px 2px at 220px 20px, rgba(255,255,255,0.9) 50%, transparent),
+    radial-gradient(3px 3px at 340px 280px, rgba(255,255,255,0.7) 50%, transparent),
+    radial-gradient(1px 1px at 460px 200px, white 50%, transparent);
 }
 
 /* Base resets */
@@ -26,86 +41,85 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
-
 a { color: var(--accent); text-decoration: none; transition: color 0.2s ease; }
 a:hover { color: var(--accent-light); }
-
 .container { max-width: var(--container); margin: 0 auto; padding: 0 2rem; }
 
-/* Make sure the content sits above the snow */
+/* Keep content above snow */
 header, main, footer { position: relative; z-index: 1; }
 
-/* The snow host fills the viewport */
+/* Single optimized snow layer */
 #snow {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;   /* fallback for browsers w/o inset */
-  width: 100%;
-  height: 100vh;                          /* ensures non-zero height */
+  top: -300px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh + 300px);
   pointer-events: none;
-  z-index: 0;                             /* behind content */
-  will-change: background-position;
-}
-
-/* Two overlay layers rendered via pseudo-elements */
-#snow::before,
-#snow::after {
-  content: "";
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  width: 100%;
-  height: 100vh;
-  pointer-events: none;
-  will-change: background-position;
-}
-
-/* Layer 1 (far) */
-#snow {
-  opacity: .45;
-  background-image: url("../assets/snow/layer1.svg");
+  z-index: 0;
+  background-image: var(--flake-tile);
+  background-size: 480px 320px;
   background-repeat: repeat;
-  background-size: 30px 30px;
-  animation: snow-fall var(--snow-speed-1, 30s) linear infinite;
+  background-position: 0 0;
+  opacity: 0.7;
+  
+  /* Critical performance optimizations */
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  contain: layout paint style;
+  
+  /* Smooth animation with reduced distance */
+  animation: snow-fall 12s linear infinite;
 }
 
-/* Layer 2 (mid) */
 #snow::before {
-  opacity: .6;
-  background-image: url("../assets/snow/layer2.svg");
-  background-repeat: repeat;
-  background-size: 40px 40px;
-  animation: snow-fall var(--snow-speed-2, 20s) linear infinite;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: var(--flake-tile);
+  background-size: 480px 320px;
+  background-position: -160px -80px;
+  opacity: 0.4;
+  animation: snow-fall-slow 18s linear infinite;
 }
 
-/* Layer 3 (near) */
-#snow::after {
-  opacity: .75;
-  filter: drop-shadow(0 0 2px rgba(255,255,255,.7));
-  background-image: url("../assets/snow/layer3.svg");
-  background-repeat: repeat;
-  background-size: 50px 50px;
-  animation: snow-fall var(--snow-speed-3, 12s) linear infinite;
-}
-
-/* Drift/fall */
 @keyframes snow-fall {
-  0%   { background-position: 0 0; }
-  100% { background-position: -40vw 100vh; }
+  to { transform: translate3d(0, 300px, 0); }
 }
 
-/* Toggle + reduced motion */
-.snow-off #snow,
-.snow-off #snow::before,
-.snow-off #snow::after { animation: none !important; }
+@keyframes snow-fall-slow {
+  to { transform: translate3d(0, 300px, 0); }
+}
 
-@media (prefers-reduced-motion: reduce) {
-  #snow, #snow::before, #snow::after { animation: none !important; }
+/* Toggle controls */
+.snow-off #snow {
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  #snow, #snow::before, #snow::after { animation: none !important; }
+  #snow, #snow::before { 
+    animation: none !important; 
+  }
 }
 
+/* Performance: reduce snow on lower-end devices */
+@media (max-width: 768px) {
+  #snow::before {
+    display: none; /* Remove second layer on mobile */
+  }
+  #snow {
+    opacity: 0.5; /* Lighter on mobile */
+    background-size: 320px 240px; /* Smaller pattern */
+  }
+}
+
+/* ==================== Header / nav ==================== */
 header {
   position: sticky; top: 0; z-index: 50;
   background: var(--glass);
@@ -144,6 +158,7 @@ header {
 .switch input:checked + .slider { background: var(--accent); }
 .switch input:checked + .slider:before { transform: translateX(20px); }
 
+/* ==================== Hero ==================== */
 .hero { padding:6rem 0 4rem; text-align:center; }
 .hero .tagline { color: var(--muted); font-size:.95rem; margin-bottom:1rem; font-weight:500; }
 .hero h2 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight:700; margin: 0 0 1.5rem; line-height:1.1; color: var(--text); }
@@ -167,6 +182,7 @@ header {
 .btn--secondary { background: transparent; color: var(--text); border-color: var(--border); }
 .btn--secondary:hover { background: rgba(255,255,255,.06); border-color: var(--accent); }
 
+/* ==================== Sections & cards ==================== */
 .section { padding: 4rem 0; }
 .card {
   background: var(--glass);
@@ -195,11 +211,13 @@ header {
 .contact-item { display:flex; align-items:center; gap:.5rem; color: var(--muted); }
 .contact-item a { color: var(--accent); font-weight:500; }
 
+/* ==================== Footer ==================== */
 footer {
   text-align:center; color: var(--muted); padding: 3rem 0 2rem;
   border-top:1px solid var(--border); margin-top:4rem; font-size:.9rem;
 }
 
+/* ==================== Responsive ==================== */
 @media (max-width: 768px) {
   .container { padding: 0 1.5rem; }
   .nav { flex-direction: column; gap: 1rem; padding: 1rem 0; }
