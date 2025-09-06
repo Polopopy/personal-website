@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ray Han — Computer Science</title>
+  <meta name="description" content="Ray Han — Purdue CS Student & Software Developer" />
+  <meta name="theme-color" content="#0b0a13" />
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <canvas id="snow"></canvas>
+
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <div class="brand">
+          <h1>Ray Han</h1>
+        </div>
+        <div class="nav-links">
+          <a class="nav-link" href="#about">About</a>
+          <a class="nav-link" href="#contact">Contact</a>
+          <a class="nav-link" href="resume.pdf" target="_blank">Resume</a>
+          <label class="switch">
+            <input id="snow-toggle" type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="tagline">Purdue University · Computer Science</div>
+      <h2>I build clean, useful software.</h2>
+      <p class="description">Computer science student focused on creating elegant solutions to real problems. Experienced in teaching, mentoring, and building systems that work.</p>
+      <div class="cta">
+        <a class="btn btn--primary" href="#about">About</a>
+        <a class="btn btn--secondary" href="https://github.com/rayxhan" target="_blank">GitHub</a>
+        <a class="btn btn--secondary" href="https://www.linkedin.com/in/rayxhan/" target="_blank">LinkedIn</a>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <div class="card">
+          <h3>About</h3>
+          <p>I've taught computer science for over five years at KTBYTE, mentored robotics teams, and served in Civil Air Patrol. At Purdue, I'm exploring AI and quantitative finance through clubs, hackathons, and hands-on projects.</p>
+          
+          <div class="skills">
+            <div class="skill-group">
+              <strong>Languages</strong>
+              <span>Python, Java, C++, JavaScript, TypeScript, SQL</span>
+            </div>
+            <div class="skill-group">
+              <strong>Tools</strong>
+              <span>Git, Linux, TensorFlow, AWS, Docker</span>
+            </div>
+            <div class="skill-group">
+              <strong>Focus</strong>
+              <span>Clean architecture, user experience, performance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="card">
+          <h3>Contact</h3>
+          <p>Available for internships, projects, and collaboration opportunities.</p>
+          
+          <div class="contact-info">
+            <div class="contact-item">
+              Email: <a href="mailto:rayxhan@gmail.com">rayxhan@gmail.com</a>
+            </div>
+            <div class="contact-item">
+              <a href="https://github.com/rayxhan" target="_blank">GitHub</a>
+            </div>
+            <div class="contact-item">
+              <a href="https://www.linkedin.com/in/rayxhan/" target="_blank">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <small>© <span id="year"></span> Ray Han</small>
+    </div>
+  </footer>
+
+  <script src="scripts/main.js" defer></script>
+  <script src="scripts/snow.js" defer></script>
+</body>
+</html>
