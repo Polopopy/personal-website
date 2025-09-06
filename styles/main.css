@@ -32,14 +32,29 @@ a:hover { color: var(--accent-light); }
 
 .container { max-width: var(--container); margin: 0 auto; padding: 0 2rem; }
 
-#snow,
+/* Make sure the content sits above the snow */
+header, main, footer { position: relative; z-index: 1; }
+
+/* The snow host fills the viewport */
+#snow {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;   /* fallback for browsers w/o inset */
+  width: 100%;
+  height: 100vh;                          /* ensures non-zero height */
+  pointer-events: none;
+  z-index: 0;                             /* behind content */
+  will-change: background-position;
+}
+
+/* Two overlay layers rendered via pseudo-elements */
 #snow::before,
 #snow::after {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%;
+  height: 100vh;
   pointer-events: none;
-  z-index: 0;                       /* behind content */
   will-change: background-position;
 }
 
@@ -71,16 +86,20 @@ a:hover { color: var(--accent-light); }
   animation: snow-fall var(--snow-speed-3, 12s) linear infinite;
 }
 
-/* Vertical fall + subtle wind drift */
+/* Drift/fall */
 @keyframes snow-fall {
-  0%   { background-position: 0    0; }
+  0%   { background-position: 0 0; }
   100% { background-position: -40vw 100vh; }
 }
 
-/* Toggle support (pause when .snow-off is on <html>) */
+/* Toggle + reduced motion */
 .snow-off #snow,
 .snow-off #snow::before,
 .snow-off #snow::after { animation: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  #snow, #snow::before, #snow::after { animation: none !important; }
+}
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
